@@ -17,8 +17,8 @@ SITE_URL = ""
 THEME = "/Users/gyorgyorosz/Documents/PPKE/homepage/crowsfoot"
 PROFILE_IMAGE_URL = "/images/wordcloud.png"
 SHOW_ARTICLE_AUTHOR = False
-EMAIL_ADDRESS = "oroszgy@itk.ppke.hu"
-GITHUB_ADDRESS = ""
+EMAIL_ADDRESS = "gyorgy@orosz.link"
+GITHUB_ADDRESS = "http://github.com/oroszgy"
 #MENUITEMS = [("Teaching (hu)", "pages/teaching.md"), ("About", "pages/about.md")]
 
 # Feed generation is usually not desired when developing
