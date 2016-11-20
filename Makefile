@@ -15,7 +15,7 @@ FTP_TARGET_DIR=/
 SSH_HOST=users.itk.ppke.hu
 SSH_PORT=22
 SSH_USER=oroszgy
-SSH_TARGET_DIR=/home/oroszgy/public_html/new
+SSH_TARGET_DIR=/home/oroszgy/public_html
 
 S3_BUCKET=my_s3_bucket
 

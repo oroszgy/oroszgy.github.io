@@ -9,14 +9,17 @@ PATH = 'content'
 
 TIMEZONE = 'Europe/Paris'
 
-STATIC_PATHS = ['images', 'pdfs']
+STATIC_PATHS = ['images', 'pdfs', 'handouts']
+READERS = {'html': None}
 
 DEFAULT_LANG = 'en'
-THEME = "/Users/gyorgyorosz/Documents/crowsfoot"
-PROFILE_IMAGE_URL = "images/wordcloud.png"
+SITE_URL = ""
+THEME = "/Users/gyorgyorosz/Documents/PPKE/homepage/crowsfoot"
+PROFILE_IMAGE_URL = "/images/wordcloud.png"
 SHOW_ARTICLE_AUTHOR = False
 EMAIL_ADDRESS = "oroszgy@itk.ppke.hu"
-#MENUITEMS = [("Teaching (hu)", "teaching.html"), ("About", "about.html")]
+GITHUB_ADDRESS = ""
+#MENUITEMS = [("Teaching (hu)", "pages/teaching.md"), ("About", "pages/about.md")]
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -38,4 +41,4 @@ SOCIAL = (('You can add links in your config file', '#'),
 DEFAULT_PAGINATION = False
 
 # Uncomment following line if you want document-relative URLs when developing
-RELATIVE_URLS = True
+RELATIVE_URLS = False

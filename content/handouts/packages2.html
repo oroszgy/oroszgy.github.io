@@ -1,0 +1,3120 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Packaging</title>
+    <!-- Styles -->
+    
+    <style type="text/css" media="print">
+      /*
+Letter 612 x 792
+A4     498 x 750
+*/
+
+/***************************************************************************/
+/* The bits that you probably want to override! */
+body {
+  font-size: 20pt;
+  font-family: "Helvetica", "Arial", "Liberation Sans", sans-serif;
+  color: black;
+  background-color: #fff; /* Colour outside of slide */
+}
+
+div.presentation, div.slide {
+  background-color: white; /* colour of the slide */
+}
+
+div.slide h1, div.slide h2, div.slide h3, div.slide h4, div.slide h5, div.slide h6 {
+  color: navy;
+  font-weight: normal;
+}
+
+div.slide h3, div.slide h4, div.slide h5, div.slide h6 {
+  margin-bottom: 6px;
+}
+
+div.slide h3 + p, div.slide h4 + p, div.slide h5 + p, div.slide h6 + p {
+  margin-top: 6px;
+}
+
+pre {
+  font-size: 12pt;
+  font-family: Monaco, Courier, monospace;
+}
+
+li {
+  line-height: 1.5em;
+  margin-left: 10pt;
+  /*padding: 10px 0*/;
+}
+
+li ul, li ul li {
+  margin-top: 0;
+}
+
+table {
+  margin-top: 6pt;
+  border-collapse: collapse;
+  width: 100%;
+}
+table th {
+  text-align: left;
+  border-bottom: 1px solid #666;
+}
+table td, table th {
+  padding-left:   10px;
+  padding-right:  10px;
+  padding-top:    4px;
+  padding-bottom: 4px;
+}
+tr > td:first-child, tr > th:first-child {
+  padding-left: 0;
+}
+
+/* .notes are displayed when you press '2' */
+.notes {
+  color: white;
+  background: #777;
+  opacity:0.90;
+}
+
+/* A title slide is a single header */
+.slide header:only-child h1 {
+  font-weight: bold;
+  font-size: 36pt;
+}
+
+/* Source and page number */
+aside.source, aside.page_number {
+  font-size: 14pt;
+}
+
+/* Quote and blockquote */
+blockquote          { text-indent: -1ex; margin-bottom: 10px;}
+blockquote *        { quotes: none; }
+blockquote p:before { content: '\201C'; }
+blockquote p:after  { content: '\201D'; }
+blockquote p        { margin:0; padding:0; }
+blockquote q:before { content: '\2018'; }
+blockquote q:after  { content: '\2019'; }
+.cite { margin:0; text-align:right; margin-right: 40px;}
+
+/***************************************************************************/
+/* Specific clases for use with the .fx: macro */
+
+/* smaller and larger */
+.smaller section {
+  font-size: 18pt;
+}
+
+.smaller div h1 {
+  font-size: 40pt;
+}
+
+.smaller section pre {
+  font-size: 10pt;
+}
+
+.larger section {
+  font-size: 22pt;
+}
+
+.larger div h1 {
+  font-size: 40pt;
+}
+
+.larger section pre {
+  font-size: 14pt;
+}
+
+/* titleslide: displaying a title(h1) and subtitle(h2) on the same slide */
+div.titleslide { text-align: center; }
+div.titleslide h1 { padding-top: 50pt; font-size: 60pt; font-weight: bold;}
+
+/* imageslide: covering a whole slide with an image */
+div.slides div.imageslide {margin: 0; width: 750pt; height: 460pt; overflow: hidden}
+div.imageslide img {
+  position: relative;
+  /*top: -144pt;*/
+  /*top: -460pt;*/
+  /*left: -10pt; */
+  top: -138pt;
+  left: -10pt;
+  width: 750pt;
+  height: 460pt;
+  max-width: 750pt !important;
+  max-height: 460pt !important;
+  z-index: 0;
+}
+
+div.imageslide h1 { position: relative; z-index: 3 !important; /*left: 40px; top: -70pt; */}
+
+/* black and white header for use with imageslide */
+div.whiteheading h1 {color: #fffffe !important;}
+div.blackheading h1 {color: black !important;}
+
+/***************************************************************************/
+/* Syntax highlighting is by Pygments - select via config file */
+.lineno {color: #aaa; }  /* Line numbers */
+
+
+
+/***************************************************************************/
+/* The structure - You shouldn't need to change anything from here on down */
+body {
+  /*padding : 70pt;*/
+  margin  : 0;
+  overflow: hidden;
+}
+
+div.presentation, div.slides {
+    transform: scale(1),
+    -ms-transform: scale(1),
+    -moz-transform: scale(1),
+    -webkit-transform: scale(1),
+    -o-transform: scale(1),
+}
+
+/*div.slides {
+  width: 754pt !important;
+  height: 502pt !important;
+}*/
+
+div.slide {
+  display: block !important;
+  width: 740pt !important;
+  height: 460pt !important;
+  border: 2pt solid #ddd;
+/*  width      : 100%;
+  height     : 100%;*/
+  overflow   : hidden;
+  page-break-after: always;
+}
+
+div.slide div.inner {
+  width: 750pt !important;
+  height: 460pt !important;
+  margin: auto;
+  display: table-cell;
+  padding: 10pt;
+}
+
+
+/* A title slide is a single header */
+.slide header:only-child {
+  display: table;
+}
+
+.slide header:only-child h1 {
+  width: 750pt !important;
+  height: 460pt !important;
+  text-align    : center;
+  display       : table-cell;
+  vertical-align: middle;
+}
+
+/*.slide header:only-child h1 {
+  line-height: 180%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  height: 600px;
+  width: 800px;
+  font-size: 48px;
+  margin-top:100px;
+  margin-bottom:100px;
+}
+*/
+
+
+ol {
+  margin-left: 5pt;
+}
+
+/* Image alignment options. Note that we align centre by default */
+img { display: block; margin: auto; max-width: 600pt; max-height: 340pt;}
+
+section img.align-center, section img.align-centre, section img.center, section img.centre {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section img.align-right, section img.right {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+section img.align-left, section img.left {
+  display: block;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+section img.float-right {
+  display: block;
+  float: right;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+section img.float-left {
+  display: block;
+  float: left;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+/* Source and page number */
+aside, footer {
+  display: block;
+  visibility: visible;
+}
+
+aside.source {
+  display: none;
+}
+
+.page_number {
+  position: relative;
+  text-align: right;
+  display: block !important;
+  visibility: visible !important;
+  top: -40pt;
+  right    : 0px;
+  color    : black !important;
+  padding  : 5pt !important;
+}
+
+
+#toc, #help, .slide .notes,
+.presenter_notes, #current_presenter_notes, #presenter_note,
+ #time {
+  display: none;
+}
+
+
+/* Turn of page numbers by uncommenting this */
+.page_number {
+  display: none !important;
+}
+
+/* Custom CSS bits */
+.credits {
+    float: right;
+    text-align:left;
+    padding-top: 150pt !important;
+}
+
+.columnlist2 ul {
+    vertical-align: top;
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;
+    column-count: 2;
+    column-gap: 20px;
+}
+
+.columnlist3 ul {
+    vertical-align: top;
+    -moz-column-count: 3;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 20px;
+    column-count: 3;
+    column-gap: 20px;
+}
+
+.hll { background-color: #ffffcc }
+ { background: #f8f8f8; }
+.c { color: #408080; font-style: italic } /* Comment */
+.err { border: 1px solid #FF0000 } /* Error */
+.k { color: #008000; font-weight: bold } /* Keyword */
+.o { color: #666666 } /* Operator */
+.cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.cp { color: #BC7A00 } /* Comment.Preproc */
+.c1 { color: #408080; font-style: italic } /* Comment.Single */
+.cs { color: #408080; font-style: italic } /* Comment.Special */
+.gd { color: #A00000 } /* Generic.Deleted */
+.ge { font-style: italic } /* Generic.Emph */
+.gr { color: #FF0000 } /* Generic.Error */
+.gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.gi { color: #00A000 } /* Generic.Inserted */
+.go { color: #808080 } /* Generic.Output */
+.gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.gs { font-weight: bold } /* Generic.Strong */
+.gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.gt { color: #0040D0 } /* Generic.Traceback */
+.kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.kp { color: #008000 } /* Keyword.Pseudo */
+.kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.kt { color: #B00040 } /* Keyword.Type */
+.m { color: #666666 } /* Literal.Number */
+.s { color: #BA2121 } /* Literal.String */
+.na { color: #7D9029 } /* Name.Attribute */
+.nb { color: #008000 } /* Name.Builtin */
+.nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.no { color: #880000 } /* Name.Constant */
+.nd { color: #AA22FF } /* Name.Decorator */
+.ni { color: #999999; font-weight: bold } /* Name.Entity */
+.ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.nf { color: #0000FF } /* Name.Function */
+.nl { color: #A0A000 } /* Name.Label */
+.nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.nt { color: #008000; font-weight: bold } /* Name.Tag */
+.nv { color: #19177C } /* Name.Variable */
+.ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.w { color: #bbbbbb } /* Text.Whitespace */
+.mf { color: #666666 } /* Literal.Number.Float */
+.mh { color: #666666 } /* Literal.Number.Hex */
+.mi { color: #666666 } /* Literal.Number.Integer */
+.mo { color: #666666 } /* Literal.Number.Oct */
+.sb { color: #BA2121 } /* Literal.String.Backtick */
+.sc { color: #BA2121 } /* Literal.String.Char */
+.sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.s2 { color: #BA2121 } /* Literal.String.Double */
+.se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.sh { color: #BA2121 } /* Literal.String.Heredoc */
+.si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.sx { color: #008000 } /* Literal.String.Other */
+.sr { color: #BB6688 } /* Literal.String.Regex */
+.s1 { color: #BA2121 } /* Literal.String.Single */
+.ss { color: #19177C } /* Literal.String.Symbol */
+.bp { color: #008000 } /* Name.Builtin.Pseudo */
+.vc { color: #19177C } /* Name.Variable.Class */
+.vg { color: #19177C } /* Name.Variable.Global */
+.vi { color: #19177C } /* Name.Variable.Instance */
+.il { color: #666666 } /* Literal.Number.Integer.Long */
+
+    </style>
+    <style type="text/css" media="screen, projection">
+      /***************************************************************************/
+/* The bits that you probably want to override! */
+body {
+    font-size: 36px;
+    font-family: "Helvetica", "Arial", "Liberation Sans", sans-serif;
+    color: black;
+    background-color: #333; /* Colour outside of slide */
+}
+
+div.presentation, div.slide {
+  background-color: white; /* colour of the slide */
+}
+
+div.slide h1, div.slide h2, div.slide h3, div.slide h4, div.slide h5, div.slide h6 {
+  color: navy;
+  font-weight: normal;
+}
+
+pre {
+  font-size: 26px;
+  font-family: Monaco, Courier, monospace;
+}
+
+li {
+  padding: 10px 0;
+}
+
+table {
+  margin-top: 10px;
+  border-collapse: collapse;
+  width: 100%;
+}
+table th {
+  text-align: left;
+  border-bottom: 1px solid #666;
+}
+table td, table th {
+  padding-left:   10px;
+  padding-right:  10px;
+  padding-top:    4px;
+  padding-bottom: 4px;
+}
+tr > td:first-child, tr > th:first-child {
+  padding-left: 0;
+}
+
+/* .notes are displayed when you press '2' */
+.notes {
+  color: white;
+  background: #777;
+  opacity:0.90;
+}
+
+/* A title slide is a single header */
+.slide header:only-child h1 {
+  font-weight: bold;
+  font-size: 80px;
+}
+
+/* Source and page number */
+aside.source, aside.page_number {
+  font-size: 20px;
+}
+
+/* Quote and blockquote */
+blockquote          { text-indent: -1ex; margin-bottom: 10px;}
+blockquote *        { quotes: none; }
+blockquote p:before { content: '\201C'; }
+blockquote p:after  { content: '\201D'; }
+blockquote p        { margin:0; padding:0; }
+blockquote q:before { content: '\2018'; }
+blockquote q:after  { content: '\2019'; }
+.cite { margin:0; text-align:right; margin-right: 40px;}
+
+/***************************************************************************/
+/* Specific clases for use with the .fx: macro */
+
+/* smaller and larger */
+.smaller section {
+  font-size: 30px;
+}
+
+.smaller div h1 {
+  font-size: 72px;
+}
+
+.smaller section pre {
+  font-size: 24px;
+}
+
+.larger section {
+  font-size: 42px;
+}
+
+.larger div h1 {
+  font-size: 72px;
+}
+
+.larger section pre {
+  font-size: 28px;
+}
+
+/* titleslide: displaying a title(h1) and subtitle(h2) on the same slide */
+div.titleslide { text-align: center; }
+div.titleslide h1 { padding-top: 140px; font-size: 80px; font-weight: bold;}
+
+/* imageslide: covering a whole slide with an image */
+div.slides div.imageslide {margin: 0; width: 1024px; height: 768px;}
+div.imageslide img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1024px;
+  max-width: 1024px; max-height: 768px;
+  z-index: 0;
+}
+
+div.imageslide h1 { position: absolute; z-index: 3; left: 40px; top: 0; }
+
+/* black and white header for use with imageslide */
+div.whiteheading h1 {color: white !important;}
+div.blackheading h1 {color: black !important;}
+
+/***************************************************************************/
+/* Syntax highlighting is by Pygments - select via config file */
+.lineno {color: #aaa; }  /* Line numbers */
+
+
+/***************************************************************************/
+/* Slide transition */
+.slide.past {
+  opacity: 0;
+}
+
+.slide.current {
+  opacity: 1;
+  -webkit-transition: opacity 0.75s ease;
+  -moz-transition: opacity 0.75s ease;
+  -o-transition: opacity 0.75s ease;
+  z-index: 100;
+}
+
+.slide.future {
+  opacity: 0;
+}
+
+/***************************************************************************/
+/* The structure - You shouldn't need to change anything from here on down */
+body {
+  padding : 0;
+  margin  : 0;
+  width   : 100%;
+  height  : 100%;
+  overflow: hidden;
+}
+
+div.presentation {
+  margin     : 0px auto;
+  width      : 1024px;
+  height     : 768px;
+  position   : absolute;
+  top        : 50%;
+  left       : 50%;
+  margin-left: -512px;
+  margin-top : -384px;
+}
+
+div.slides {
+  width      : 1024px;
+  height     : 768px;
+}
+
+div.slide {
+  margin-left: 80px; /* Nice big margin */
+  margin-top : 40px;
+  width      : 864px;
+  height     : 688px;
+  position   : absolute;
+  overflow   : hidden;
+  z-index: 0;
+  opacity: 0;
+}
+
+/* A title slide is a single header */
+.slide header:only-child {
+  display: table;
+}
+
+.slide header:only-child h1 {
+  height        : 600px;
+  width         : 864px;
+  text-align    : center;
+  display       : table-cell;
+  vertical-align: middle;
+}
+
+ol {
+  margin-left: 15px;
+}
+
+/* Image alignment options. Note that we align centre by default */
+img { display: block; margin: auto; max-width: 864px; max-height: 500px;}
+
+section img.align-center, section img.align-centre, section img.center, section img.centre {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section img.align-right, section img.right {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+section img.align-left, section img.left {
+  display: block;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+section img.float-right {
+  display: block;
+  float: right;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+section img.float-left {
+  display: block;
+  float: left;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+/* Blank screen */
+#blank {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  z-index: 64;
+  display: none;
+}
+body.presenter_view.blank .slide.current {
+   opacity: 0.2;
+}
+
+body.presenter_view #blank {
+    display: none !important;
+}
+
+/* Display notes (keyboard: 2) */
+.notes {
+  display   : none;
+  padding   : 30px;
+  color: white;
+  position:absolute;
+  width     : 710px;
+  min-height: 300px;
+  left: 51px;
+  top: 123px;
+  overflow  : hidden;
+}
+
+/* Source and page number */
+aside {
+  display: none;
+}
+aside.source {
+  position: absolute;
+  bottom: 6px;
+  left: 0px;
+}
+aside.page_number {
+  position: absolute;
+  bottom: 6px;
+  right: 0px;
+}
+
+
+/* Expose */
+body.expose div.slides {
+  float           : left;
+  position        : relative;
+  overflow        : auto;
+  margin          : 10px;
+  width           : 1024px;
+  height          : 768px;
+  background-color: #fff !important;
+}
+
+body.expose div.slide {
+  display                 : block;
+  width                   : 864px;
+  height                  : 688px;
+  float                   : left;
+  position                : relative;
+  left                    : auto !important;
+  top                     : auto !important;
+  margin                  : 0 !important;
+  margin-left             : 10px !important;
+  margin-top              : 10px !important;
+  padding                 : 10px !important;
+  -webkit-transition      : none;
+  -moz-transition         : none;
+  -o-transition           : none;
+  -moz-transform          : scale(.30, .30);
+  -moz-transform-origin   : 0 0;
+  -webkit-transform       : scale(.30, .30);
+  -webkit-transform-origin: 0 0;
+  -o-transform            : scale(.30, .30);
+  -o-transform-origin     : 0 0;
+  cursor                  : pointer;
+  border                  : 10px solid #ccc;
+  /*background-color        : #eee;*/
+}
+
+body.expose div.slide:hover {
+  /*background-color: #D7FCFC;*/
+  border: 10px solid blue;
+}
+
+body.expose .slide-wrapper {
+  float   : left;
+  position: relative;
+  overflow: hidden;
+  margin  : .5%;
+  width   : 300px;
+  height  : 233px;
+}
+
+body.expose .slide.far-past,
+body.expose .slide.past,
+body.expose .slide.future,
+body.expose .slide.far-future {
+  margin-left: 0;
+  opacity: 1;
+}
+
+body.expose .slide.current {
+  border: 10px solid red;
+  -moz-transform: scale(.30, .30);
+  -moz-transform-origin: 0 0;
+  -webkit-transform: scale(.30, .30);
+  -webkit-transform-origin: 0 0;
+  -o-transform: scale(.30, .30);
+  -o-transform-origin: 0 0;
+}
+
+body.expose .slide aside {
+  display: block;
+}
+body.expose .slide aside.source {
+  display: none;
+}
+body.expose .slide aside.page_number {
+  display         : block;
+  position        : absolute;
+  bottom          : 10px;
+  right           : 10px;
+  font-size       : 40px;
+  background-color: #eee;
+  color           : black;
+  padding         : 10px;
+}
+
+body.expose .slide.current aside.page_number {
+  background-color: red;
+  color: white;
+}
+
+body.expose .slide:hover aside.page_number {
+  background-color: blue;
+  color: white;
+}
+
+/* Sidebar for ToC and Help */
+.sidebar {
+  background-color: #eee;
+  color: #000;
+  border-right: 5px solid #ddd;
+  z-index: 63;
+  height: 100%;
+  overflow: hidden;
+  top: 0;
+  position: absolute;
+  display: block;
+  margin: 0;
+  padding: 10px 16px;
+  overflow: auto;
+  -webkit-transition: margin 0.2s ease-in-out;
+  -moz-transition: margin 0.2s ease-in-out;
+  -o-transition: margin 0.2s ease-in-out;
+  font-size: 14px;
+}
+
+.sidebar.hidden {
+  margin-left: -500px;
+}
+
+.sidebar h2 {
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.sidebar table {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+}
+
+.sidebar table caption {
+  display: none;
+}
+
+.sidebar tr {
+  margin: 2px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.sidebar th {
+  text-align: left;
+  font-weight: normal;
+  max-width: 300px;
+  overflow: hidden;
+}
+
+.sidebar tr.sub th {
+  text-indent: 20px;
+}
+
+.sidebar td {
+  text-align: right;
+  min-width: 20px;
+}
+
+.sidebar a {
+  color: #000;
+  display: block;
+  text-decoration: none;
+  border-bottom: none;
+  padding: 4px 0;
+}
+
+.sidebar tr.active, .sidebar tr.active:hover, .sidebar tr.active a {
+  background: white;
+}
+
+.sidebar tr:hover {
+  background: #ccc;
+}
+
+/* Presenter Mode */
+body.presenter_view, body.presenter_view div.presentation {
+  background-color: #333 !important;
+}
+body.presenter_view div.slides {
+  margin-left: -40px !important;
+  margin-top : -30px !important;
+}
+
+body.presenter_view div.slide {
+  display: inline;
+  position: absolute;
+  overflow: hidden;
+  -moz-transform: scale(0.55, 0.55);
+  -moz-transform-origin: 0 0;
+  -webkit-transform: scale(0.55, 0.55);
+  -webkit-transform-origin: 0 0;
+  -o-transform: scale(0.55, 0.55);
+  -o-transform-origin: 0 0;
+  opacity: 1;
+  width: 864px !important;
+  height: 688px !important;
+  margin-left: 60px !important;
+  margin-top: 90px !important;
+}
+
+body.presenter_view .slide.far-past {
+  display: none;
+}
+
+body.presenter_view .slide.past {
+  display: none;
+}
+
+body.presenter_view .slide.current {
+  display: block;
+  border: 8px solid maroon;
+  z-index: 2;
+}
+
+body.presenter_view .slide.future {
+  display: block;
+  margin-left: 560px !important;
+  z-index: 1;
+  opacity: 1;
+  margin-top: 90px !important;
+  border: 8px solid #aaa;
+  -moz-transform: scale(0.55, 0.55);
+  -moz-transform-origin: 0 0;
+  -webkit-transform: scale(0.55, 0.55);
+  -webkit-transform-origin: 0 0;
+  -o-transform: scale(0.55, 0.55);
+  -o-transform-origin: 0 0;
+}
+
+body.presenter_view .slide.far-future {
+  display: none;
+  margin-left: 525px;
+}
+
+body.presenter_view div#current_presenter_notes {
+  visibility: visible;
+  display: block;
+  position: absolute;
+  overflow: auto;
+  vertical-align: middle;
+  left: 0;
+  top: 60%;
+  height: 38%;
+  margin-left: 20px;
+  z-index: 2;
+  width: 973px;
+  border: 4px solid #aaa;
+  background-color: #eee;
+}
+
+body.presenter_view div#current_presenter_notes section {
+    background-color: #eee !important;
+}
+
+body.presenter_view .slide aside.page_number {
+  display         : block;
+  position        : absolute;
+  bottom          : 10px;
+  right           : 10px;
+  font-size       : 70px;
+  background-color: #eee;
+  color           : black;
+  padding         : 10px;
+}
+
+body.presenter_view .slide.current aside.page_number {
+  background-color: maroon;
+  color: white;
+}
+
+/* Time display */
+#time { display: none; }
+
+body.presenter_view #time {
+  display: block;
+  color: white;
+  float:right;
+  width: 200px;
+  text-align: right;
+  margin-right: 40px;
+  margin-top: 20px;
+  padding: 0;
+  line-height: 0;
+  font-size: 55px;
+}
+
+body.presenter_view div#current_presenter_notes header {
+  border-bottom: 1px solid #ccc;
+}
+body.presenter_view div#current_presenter_notes header h1 {
+  margin: 5px 10px;
+}
+
+body.presenter_view div#current_presenter_notes section {
+  font-family: "Helvetica", "Arial", "Liberation Sans", sans-serif;
+  font-size: 20px;
+  color: black;
+  display: block;
+  overflow: visible;
+  position: relative;
+  background-color: #fffeff;
+  margin: 0;
+  padding: 10px;
+/*  border: 3px solid blue;*/
+
+}
+
+body.presenter_view div#current_presenter_notes section p {
+  margin: 0;
+}
+
+body.presenter_view div#current_presenter_notes section li {
+  font-size: inherit;
+  padding: 0;
+}
+
+body.presenter_view div#current_presenter_notes h1 {
+  margin-left: 10px;
+  font-size: 20px;
+  display: block;
+
+}
+
+div#current_presenter_notes {
+  display: none;
+}
+
+div.slide div.presenter_notes {
+  display: none;
+}
+
+
+.hll { background-color: #ffffcc }
+ { background: #f8f8f8; }
+.c { color: #408080; font-style: italic } /* Comment */
+.err { border: 1px solid #FF0000 } /* Error */
+.k { color: #008000; font-weight: bold } /* Keyword */
+.o { color: #666666 } /* Operator */
+.cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.cp { color: #BC7A00 } /* Comment.Preproc */
+.c1 { color: #408080; font-style: italic } /* Comment.Single */
+.cs { color: #408080; font-style: italic } /* Comment.Special */
+.gd { color: #A00000 } /* Generic.Deleted */
+.ge { font-style: italic } /* Generic.Emph */
+.gr { color: #FF0000 } /* Generic.Error */
+.gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.gi { color: #00A000 } /* Generic.Inserted */
+.go { color: #808080 } /* Generic.Output */
+.gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.gs { font-weight: bold } /* Generic.Strong */
+.gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.gt { color: #0040D0 } /* Generic.Traceback */
+.kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.kp { color: #008000 } /* Keyword.Pseudo */
+.kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.kt { color: #B00040 } /* Keyword.Type */
+.m { color: #666666 } /* Literal.Number */
+.s { color: #BA2121 } /* Literal.String */
+.na { color: #7D9029 } /* Name.Attribute */
+.nb { color: #008000 } /* Name.Builtin */
+.nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.no { color: #880000 } /* Name.Constant */
+.nd { color: #AA22FF } /* Name.Decorator */
+.ni { color: #999999; font-weight: bold } /* Name.Entity */
+.ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.nf { color: #0000FF } /* Name.Function */
+.nl { color: #A0A000 } /* Name.Label */
+.nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.nt { color: #008000; font-weight: bold } /* Name.Tag */
+.nv { color: #19177C } /* Name.Variable */
+.ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.w { color: #bbbbbb } /* Text.Whitespace */
+.mf { color: #666666 } /* Literal.Number.Float */
+.mh { color: #666666 } /* Literal.Number.Hex */
+.mi { color: #666666 } /* Literal.Number.Integer */
+.mo { color: #666666 } /* Literal.Number.Oct */
+.sb { color: #BA2121 } /* Literal.String.Backtick */
+.sc { color: #BA2121 } /* Literal.String.Char */
+.sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.s2 { color: #BA2121 } /* Literal.String.Double */
+.se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.sh { color: #BA2121 } /* Literal.String.Heredoc */
+.si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.sx { color: #008000 } /* Literal.String.Other */
+.sr { color: #BB6688 } /* Literal.String.Regex */
+.s1 { color: #BA2121 } /* Literal.String.Single */
+.ss { color: #19177C } /* Literal.String.Symbol */
+.bp { color: #008000 } /* Name.Builtin.Pseudo */
+.vc { color: #19177C } /* Name.Variable.Class */
+.vg { color: #19177C } /* Name.Variable.Global */
+.vi { color: #19177C } /* Name.Variable.Instance */
+.il { color: #666666 } /* Literal.Number.Integer.Long */
+
+    </style>
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script>
+      function main() {
+    // Since we don't have the fallback of attachEvent and
+    // other IE only stuff we won't try to run JS for IE.
+    // It will run though when using Google Chrome Frame
+    if (document.all) { return; }
+
+    var currentSlideNo;
+    var notesOn = false;
+    var expanded = false;
+    var hiddenContext = false;
+    var blanked = false;
+    var slides = document.getElementsByClassName('slide');
+    var touchStartX = 0;
+    var spaces = /\s+/, a1 = [''];
+    var tocOpened = false;
+    var helpOpened = false;
+    var overviewActive = false;
+    var modifierKeyDown = false;
+    var scale = 1;
+    var showingPresenterView = false;
+    var presenterViewWin = null;
+    var isPresenterView = false;
+
+    var str2array = function(s) {
+        if (typeof s == 'string' || s instanceof String) {
+            if (s.indexOf(' ') < 0) {
+                a1[0] = s;
+                return a1;
+            } else {
+                return s.split(spaces);
+            }
+        }
+        return s;
+    };
+
+    var trim = function(str) {
+        return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    };
+
+    var addClass = function(node, classStr) {
+        classStr = str2array(classStr);
+        var cls = ' ' + node.className + ' ';
+        for (var i = 0, len = classStr.length, c; i < len; ++i) {
+            c = classStr[i];
+            if (c && cls.indexOf(' ' + c + ' ') < 0) {
+                cls += c + ' ';
+            }
+        }
+        node.className = trim(cls);
+    };
+
+    var removeClass = function(node, classStr) {
+        var cls;
+        if (!node) {
+            throw 'no node provided';
+        }
+        if (classStr !== undefined) {
+            classStr = str2array(classStr);
+            cls = ' ' + node.className + ' ';
+            for (var i = 0, len = classStr.length; i < len; ++i) {
+                cls = cls.replace(' ' + classStr[i] + ' ', ' ');
+            }
+            cls = trim(cls);
+        } else {
+            cls = '';
+        }
+        if (node.className != cls) {
+            node.className = cls;
+        }
+    };
+
+    var getSlideEl = function(slideNo) {
+        if (slideNo > 0) {
+            return slides[slideNo - 1];
+        } else {
+            return null;
+        }
+    };
+
+    var getSlideTitle = function(slideNo) {
+        var el = getSlideEl(slideNo);
+        if (el) {
+            var headers = el.getElementsByTagName('header');
+            if (headers.length > 0) {
+                return el.getElementsByTagName('header')[0].innerText;
+            }
+        }
+        return null;
+    };
+
+    var getSlidePresenterNote = function(slideNo) {
+        var el = getSlideEl(slideNo);
+        if (el) {
+            var n = el.getElementsByClassName('presenter_notes');
+            if (n.length > 0) {
+                return n[0];
+            }
+        }
+        return null;
+    };
+
+    var changeSlideElClass = function(slideNo, className) {
+        var el = getSlideEl(slideNo);
+        if (el) {
+            removeClass(el, 'far-past past current future far-future');
+            addClass(el, className);
+        }
+    };
+
+    var updateSlideClasses = function(updateOther) {
+        window.location.hash = (isPresenterView ? "presenter" : "slide") + currentSlideNo;
+
+        for (var i=1; i<currentSlideNo-1; i++) {
+            changeSlideElClass(i, 'far-past');
+        }
+
+        changeSlideElClass(currentSlideNo - 1, 'past');
+        changeSlideElClass(currentSlideNo, 'current');
+        changeSlideElClass(currentSlideNo + 1, 'future');
+
+        for (i=currentSlideNo+2; i<slides.length+1; i++) {
+            changeSlideElClass(i, 'far-future');
+        }
+
+        highlightCurrentTocLink();
+
+        processContext();
+
+        document.getElementsByTagName('title')[0].innerText = getSlideTitle(currentSlideNo);
+
+        updatePresenterNotes();
+
+        if (updateOther) { updateOtherPage(); }
+    };
+
+    var updatePresenterNotes = function() {
+        if (!isPresenterView) { return; }
+
+        var existingNote = document.getElementById('current_presenter_notes');
+        var currentNote = getSlidePresenterNote(currentSlideNo).cloneNode(true);
+        currentNote.setAttribute('id', 'presenter_note');
+
+        existingNote.replaceChild(currentNote, document.getElementById('presenter_note'));
+    };
+
+    var highlightCurrentTocLink = function() {
+        var toc = document.getElementById('toc');
+
+        if (toc) {
+            var tocRows = toc.getElementsByTagName('tr');
+            for (var i=0; i<tocRows.length; i++) {
+                removeClass(tocRows.item(i), 'active');
+            }
+
+            var currentTocRow = document.getElementById('toc-row-' + currentSlideNo);
+            if (currentTocRow) {
+                addClass(currentTocRow, 'active');
+            }
+        }
+    };
+
+    var updateOtherPage = function() {
+        if (!showingPresenterView) { return; }
+
+        var w = isPresenterView ? window.opener : presenterViewWin;
+        w.postMessage('slide#' + currentSlideNo, '*');
+    };
+
+    var nextSlide = function() {
+        if (currentSlideNo < slides.length) {
+            currentSlideNo++;
+        }
+        updateSlideClasses(true);
+    };
+
+    var prevSlide = function() {
+        if (currentSlideNo > 1) {
+            currentSlideNo--;
+        }
+        updateSlideClasses(true);
+    };
+
+    var showNotes = function() {
+        var notes = getSlideEl(currentSlideNo).getElementsByClassName('notes');
+        for (var i = 0, len = notes.length; i < len; i++) {
+            notes.item(i).style.display = (notesOn) ? 'none':'block';
+        }
+        notesOn = !notesOn;
+    };
+
+    var showSlideNumbers = function() {
+        var asides = document.getElementsByClassName('page_number');
+        var hidden = asides[0].style.display != 'block';
+        for (var i = 0; i < asides.length; i++) {
+            asides.item(i).style.display = hidden ? 'block' : 'none';
+        }
+    };
+
+    var showSlideSources = function() {
+        var asides = document.getElementsByClassName('source');
+        var hidden = asides[0].style.display != 'block';
+        for (var i = 0; i < asides.length; i++) {
+            asides.item(i).style.display = hidden ? 'block' : 'none';
+        }
+    };
+
+    var showToc = function() {
+        if (helpOpened) {
+                showHelp();
+        }
+        var toc = document.getElementById('toc');
+        if (toc) {
+            toc.style.marginLeft = tocOpened ? '-' + (toc.clientWidth + 20) + 'px' : '0px';
+            tocOpened = !tocOpened;
+        }
+        updateOverview();
+    };
+
+    var showHelp = function() {
+        if (tocOpened) {
+                showToc();
+        }
+
+        var help = document.getElementById('help');
+
+        if (help) {
+            help.style.marginLeft = helpOpened ? '-' + (help.clientWidth + 20) + 'px' : '0px';
+            helpOpened = !helpOpened;
+        }
+    };
+
+    var showPresenterView = function() {
+        if (isPresenterView) { return; }
+
+        if (showingPresenterView) {
+            presenterViewWin.close();
+            presenterViewWin = null;
+            showingPresenterView = false;
+        } else {
+            presenterViewWin = open(window.location.pathname + "#presenter" + currentSlideNo, 'presenter_notes',
+                                                                    'directories=no,location=no,toolbar=no,menubar=no,copyhistory=no');
+            showingPresenterView = true;
+        }
+    };
+
+    var switch3D = function() {
+        if (document.body.className.indexOf('three-d') == -1) {
+            document.getElementsByClassName('presentation')[0].style.webkitPerspective = '1000px';
+            document.body.className += ' three-d';
+        } else {
+            window.setTimeout('document.getElementsByClassName(\'presentation\')[0].style.webkitPerspective = \'0\';', 2000);
+            document.body.className = document.body.className.replace(/three-d/, '');
+        }
+    };
+
+    var toggleOverview = function() {
+        if (!overviewActive) {
+            addClass(document.body, 'expose');
+            overviewActive = true;
+            setScale(1);
+        } else {
+            removeClass(document.body, 'expose');
+            overviewActive = false;
+            if (expanded) {
+                setScale(scale);    // restore scale
+            }
+        }
+        processContext();
+        updateOverview();
+    };
+
+    var updateOverview = function() {
+        try {
+            var presentation = document.getElementsByClassName('presentation')[0];
+        } catch (e) {
+            return;
+        }
+
+        if (isPresenterView) {
+            var action = overviewActive ? removeClass : addClass;
+            action(document.body, 'presenter_view');
+        }
+
+        var toc = document.getElementById('toc');
+
+        if (!toc) {
+            return;
+        }
+
+        if (!tocOpened || !overviewActive) {
+            presentation.style.marginLeft = '0px';
+            presentation.style.width = '100%';
+        } else {
+            presentation.style.marginLeft = toc.clientWidth + 'px';
+            presentation.style.width = (presentation.clientWidth - toc.clientWidth) + 'px';
+        }
+    };
+
+    var computeScale = function() {
+        var cSlide = document.getElementsByClassName('current')[0];
+        var sx = cSlide.clientWidth / window.innerWidth;
+        var sy = cSlide.clientHeight / window.innerHeight;
+        return 1 / Math.max(sx, sy);
+    };
+
+    var setScale = function(scale) {
+        var presentation = document.getElementsByClassName('slides')[0];
+        var transform = 'scale(' + scale + ')';
+        presentation.style.MozTransform = transform;
+        presentation.style.WebkitTransform = transform;
+        presentation.style.OTransform = transform;
+        presentation.style.msTransform = transform;
+        presentation.style.transform = transform;
+    };
+
+    var expandSlides = function() {
+        if (overviewActive) {
+            return;
+        }
+        if (expanded) {
+            setScale(1);
+            expanded = false;
+        } else {
+            scale = computeScale();
+            setScale(scale);
+            expanded = true;
+        }
+    };
+
+    var showContext = function() {
+        try {
+            var presentation = document.getElementsByClassName('slides')[0];
+            removeClass(presentation, 'nocontext');
+        } catch (e) {}
+    };
+
+    var hideContext = function() {
+        try {
+            var presentation = document.getElementsByClassName('slides')[0];
+            addClass(presentation, 'nocontext');
+        } catch (e) {}
+    };
+
+    var processContext = function() {
+        if (hiddenContext) {
+            hideContext();
+        } else {
+            showContext();
+        }
+    };
+
+    var toggleContext = function() {
+        hiddenContext = !hiddenContext;
+        processContext();
+    };
+
+    var toggleBlank = function() {
+        blank_elem = document.getElementById('blank');
+
+        blank_elem.style.display = blanked ? 'none' : 'block';
+
+        blanked = !blanked;
+    };
+
+    var isModifierKey = function(keyCode) {
+        switch (keyCode) {
+            case 16: // shift
+            case 17: // ctrl
+            case 18: // alt
+            case 91: // command
+                return true;
+                break;
+            default:
+                return false;
+                break;
+        }
+    };
+
+    var checkModifierKeyUp = function(event) {
+        if (isModifierKey(event.keyCode)) {
+            modifierKeyDown = false;
+        }
+    };
+
+    var checkModifierKeyDown = function(event) {
+        if (isModifierKey(event.keyCode)) {
+            modifierKeyDown = true;
+        }
+    };
+
+    var handleBodyKeyDown = function(event) {
+        switch (event.keyCode) {
+            case 13: // Enter
+                if (overviewActive) {
+                    toggleOverview();
+                }
+                break;
+            case 27: // ESC
+                toggleOverview();
+                break;
+            case 37: // left arrow
+            case 33: // page up
+                event.preventDefault();
+                prevSlide();
+                break;
+            case 39: // right arrow
+            case 32: // space
+            case 34: // page down
+                event.preventDefault();
+                nextSlide();
+                break;
+            case 50: // 2
+                if (!modifierKeyDown) {
+                        showNotes();
+                }
+                break;
+            case 51: // 3
+                if (!modifierKeyDown && !overviewActive) {
+                    switch3D();
+                }
+                break;
+            case 190: // .
+            case 48: // 0
+            case 66: // b
+                if (!modifierKeyDown && !overviewActive) {
+                    toggleBlank();
+                }
+                break;
+            case 67: // c
+                if (!modifierKeyDown && !overviewActive) {
+                    toggleContext();
+                }
+                break;
+            case 69: // e
+                if (!modifierKeyDown && !overviewActive) {
+                    expandSlides();
+                }
+                break;
+            case 72: // h
+                showHelp();
+                break;
+            case 78: // n
+                if (!modifierKeyDown && !overviewActive) {
+                    showSlideNumbers();
+                }
+                break;
+            case 80: // p
+                if (!modifierKeyDown && !overviewActive) {
+                    showPresenterView();
+                }
+                break;
+            case 83: // s
+                if (!modifierKeyDown && !overviewActive) {
+                    showSlideSources();
+                }
+                break;
+            case 84: // t
+                showToc();
+                break;
+        }
+    };
+
+    var handleWheel = function(event) {
+        if (tocOpened || helpOpened || overviewActive) {
+            return;
+        }
+
+        var delta = 0;
+
+        if (!event) {
+            event = window.event;
+        }
+
+        if (event.wheelDelta) {
+            delta = event.wheelDelta/120;
+            if (window.opera) delta = -delta;
+        } else if (event.detail) {
+            delta = -event.detail/3;
+        }
+
+        if (delta && delta <0) {
+            nextSlide();
+        } else if (delta) {
+            prevSlide();
+        }
+    };
+
+    var addSlideClickListeners = function() {
+        for (var i=0; i < slides.length; i++) {
+            var slide = slides.item(i);
+            slide.num = i + 1;
+            slide.addEventListener('click', function(e) {
+                if (overviewActive) {
+                    currentSlideNo = this.num;
+                    toggleOverview();
+                    updateSlideClasses(true);
+                    e.preventDefault();
+                }
+                return false;
+            }, true);
+        }
+    };
+
+    var addRemoteWindowControls = function() {
+        window.addEventListener("message", function(e) {
+            if (e.data.indexOf("slide#") != -1) {
+                    currentSlideNo = Number(e.data.replace('slide#', ''));
+                    updateSlideClasses(false);
+            }
+        }, false);
+    };
+
+    var addTouchListeners = function() {
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].pageX;
+        }, false);
+        document.addEventListener('touchend', function(e) {
+            var pixelsMoved = touchStartX - e.changedTouches[0].pageX;
+            var SWIPE_SIZE = 150;
+            if (pixelsMoved > SWIPE_SIZE) {
+                nextSlide();
+            }
+            else if (pixelsMoved < -SWIPE_SIZE) {
+             prevSlide();
+            }
+        }, false);
+    };
+
+    var addTocLinksListeners = function() {
+        var toc = document.getElementById('toc');
+        if (toc) {
+            var tocLinks = toc.getElementsByTagName('a');
+            for (var i=0; i < tocLinks.length; i++) {
+                tocLinks.item(i).addEventListener('click', function(e) {
+                    currentSlideNo = Number(this.attributes['href'].value.replace('#slide', ''));
+                    updateSlideClasses(true);
+                    e.preventDefault();
+                }, true);
+            }
+        }
+    };
+
+    // initialize
+
+    (function() {
+        if (window.location.hash == "") {
+            currentSlideNo = 1;
+        } else if (window.location.hash.indexOf("#presenter") != -1) {
+            currentSlideNo = Number(window.location.hash.replace('#presenter', ''));
+            isPresenterView = true;
+            showingPresenterView = true;
+            presenterViewWin = window;
+            addClass(document.body, 'presenter_view');
+        } else {
+            currentSlideNo = Number(window.location.hash.replace('#slide', ''));
+        }
+
+        document.addEventListener('keyup', checkModifierKeyUp, false);
+        document.addEventListener('keydown', handleBodyKeyDown, false);
+        document.addEventListener('keydown', checkModifierKeyDown, false);
+        document.addEventListener('DOMMouseScroll', handleWheel, false);
+
+        window.onmousewheel = document.onmousewheel = handleWheel;
+        window.onresize = expandSlides;
+
+        for (var i = 0, el; el = slides[i]; i++) {
+            addClass(el, 'slide far-future');
+        }
+        updateSlideClasses(false);
+
+        // add support for finger events (filter it by property detection?)
+        addTouchListeners();
+
+        addTocLinksListeners();
+
+        addSlideClickListeners();
+
+        addRemoteWindowControls();
+    })();
+}
+
+    </script>
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="time">
+      <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+    </div>            
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Packaging</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><ul class="simple">
+<li>What is a distribution/package?</li>
+<li>How to create?</li>
+<li>How to distribute?</li>
+<li>How to install?</li>
+</ul>
+<p><a class="reference external" href="https://packaging.python.org">https://packaging.python.org</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Goals</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>package creation including metadata, Python code &amp; binary dependencies</li>
+<li>distribute</li>
+<li>install</li>
+<li>dependency management</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Introduction</h1></header>
+            
+            
+            <section><h2>A bit of history</h2>
+<ul>
+<li><dl class="first docutils">
+<dt>2000 <tt class="docutils literal">distutils</tt> introduced in Python 1.6</dt>
+<dd><ul class="first last simple">
+<li>no dependency management</li>
+<li>no consistant way to reproduce installation</li>
+<li>not all metadata is handled</li>
+<li>still the default packaging library included in the std. lib.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">2001 PEP 241: metadata of distributions</p>
+</li>
+<li><p class="first">2002-2003 PEP 301: PyPI</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><ul>
+<li><dl class="first docutils">
+<dt>2004 <tt class="docutils literal">setuptools</tt></dt>
+<dd><ul class="first last simple">
+<li>based on <tt class="docutils literal">distutils</tt></li>
+<li>no way to uninstall packages</li>
+<li>dependency management</li>
+<li>introduces the Egg format and <tt class="docutils literal">easy_install</tt></li>
+<li>is not part of Python's standard library</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><ul>
+<li><dl class="first docutils">
+<dt>2008 <tt class="docutils literal">distribute</tt> was introduced as a fork of <tt class="docutils literal">setuptools</tt></dt>
+<dd><ul class="first last simple">
+<li>... was merged back to setuptools 0.7</li>
+<li><tt class="docutils literal">distribute2</tt>: the aim was to replace distutils with all the functionalities introduced in previous attempts</li>
+<li>included in Python 3.3 beta release</li>
+<li>in 2012 it gets abandoned</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><ul>
+<li><p class="first">2013 PyPA team maintains the &quot;Python Packaging User Guide&quot;</p>
+</li>
+<li><dl class="first docutils">
+<dt>2014 <tt class="docutils literal">pip</tt> evolves</dt>
+<dd><ul class="first last simple">
+<li>does not require setuptools</li>
+<li>available as a wheel</li>
+<li>included in Python 3.4</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">2014 <tt class="docutils literal">pyvenv</tt> is available in Python 3.4</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p>Read more:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://packaging.python.org/en/latest/history.html">https://packaging.python.org/en/latest/history.html</a></li>
+<li><a class="reference external" href="http://stackoverflow.com/questions/6344076/differences-between-distribute-distutils-setuptools-and-distutils2">http://stackoverflow.com/questions/6344076/differences-between-distribute-distutils-setuptools-and-distutils2</a></li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Rule of thumb</h2></header>
+            
+            
+            <section><p><a class="reference external" href="https://docs.python.org/3.4/installing/index.html">https://docs.python.org/3.4/installing/index.html</a></p>
+<ul class="simple">
+<li><tt class="docutils literal">pip</tt> is the preferred installer program</li>
+<li><tt class="docutils literal">pyvenv</tt> is the standard tool for creating virtual environments</li>
+<li><tt class="docutils literal">setuptools</tt> is the preferred way of creating distribution packages</li>
+<li>PyPI is used for publishing open source Python packages</li>
+<li>Wheels are a sort of standard</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Glossary</h2></header>
+            
+            
+            <section><p>Distribution package</p>
+<ul class="simple">
+<li>a versioned archive file containing packages, modules (aka. package, distribution)</li>
+<li>end user can download and install it</li>
+</ul>
+<p>Built distribution</p>
+<ul class="simple">
+<li>contains files and metadata</li>
+<li>can be directly deployed to the target OS</li>
+<li>Python files do not have to be precompiled</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p>Source distribution</p>
+<ul class="simple">
+<li>contains only metadata and source files</li>
+<li>a build distribution can be built from them</li>
+<li>can be generated with <tt class="docutils literal">python setup.py sdist</tt></li>
+</ul>
+<p>Binary distribution</p>
+<ul class="simple">
+<li>a specific build distribution</li>
+<li>contains compiled extensions as well</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Package formats</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Eggs</h2></header>
+            
+            
+            <section><ul class="simple">
+<li>~ Java jars: binary format (zip file)</li>
+<li><tt class="docutils literal">python setup.py bdist</tt></li>
+<li>bundles additional metadata</li>
+<li>enables the system to satisfy dependencies on runtime</li>
+<li>plugin mechanism</li>
+<li>may contain C extensions =&gt; not really platform independent</li>
+<li>zero installation (copy the .egg file)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2><strong>Wheels</strong></h2></header>
+            
+            
+            <section><p>This is becoming the new standard: (PEP 427)</p>
+<ul class="simple">
+<li>zip format archive  (.whl)</li>
+<li><tt class="docutils literal">bdist_wheel</tt></li>
+<li>installation format (do not include .pyc files)</li>
+<li>implements PEP 345,376 (metadata, database format)</li>
+<li>support multiple Python versions</li>
+<li>versioned</li>
+<li>intended to replace the Egg format</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p><strong>Universal Wheels</strong> are wheels that are pure python (i.e. contains no compiled extensions) and support Python 2 and 3. This is a wheel that can be installed anywhere by pip.</p>
+<pre>$ python setup.py bdist_wheel --universal
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p><strong>Pure Python Wheels</strong> that are not “universal” are wheels that are pure python (i.e. contains no compiled extensions), but don’t natively support both Python 2 and 3.</p>
+<pre>$ python setup.py bdist_wheel
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p><strong>Platform Wheels</strong> are wheels that are specific to a certain platform like linux, OSX, or Windows, usually due to containing compiled extensions.</p>
+<pre>$ python setup.py bdist_wheel
+</pre>
+<p>Naming of platform wheels: <a class="reference external" href="https://www.python.org/dev/peps/pep-0425/">https://www.python.org/dev/peps/pep-0425/</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p>You'll need a <tt class="docutils literal">setup.py</tt> for creating a distribution package...</p>
+<pre>python setup.py sdist <span class="c1"># Source distribution</span>
+
+python setup.py bdist <span class="c1"># Egg</span>
+
+python setup.py bdist_wheel <span class="c1"># Wheel</span>
+
+python setup.py build <span class="c1"># compile</span>
+
+python setup.py install <span class="c1"># install package</span>
+
+python setup.py install --user <span class="c1"># install package to the user home dir.</span>
+
+python setup.py develop <span class="c1"># symlink package</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Installation tools</h1></header>
+            
+            
+            <section><p><tt class="docutils literal">easy_install</tt></p>
+<p>Let's you automatically download (from PyPI), build and install packages (which are Eggs)</p>
+<p><tt class="docutils literal">pip</tt></p>
+<p>An <strong>enhanced</strong> tool for installing and managing Python packages involving repository support, uninstall, upgrade, ...</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><img alt="install_tools.png" src="data:image/png;base64,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" /></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Prefer <tt class="docutils literal">pip</tt></h2></header>
+            
+            
+            <section><ul class="simple">
+<li>All packages are downloaded before installation. Partially-completed installation doesn’t occur as a result.</li>
+<li>Care is taken to present useful output on the console.</li>
+<li>The reasons for actions are kept track of. For instance, if a package is being installed, pip keeps track of why that package was required.</li>
+<li>Meaningful error messages should be useful.</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><ul class="simple">
+<li>The code is relatively concise and cohesive, making it easier to use programmatically.</li>
+<li>Native support for other version control systems (Git, Mercurial and Bazaar)</li>
+<li>Uninstallation of packages.</li>
+<li>Simple to define fixed sets of requirements and reliably reproduce a set of packages.</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Creating packages</h1></header>
+            
+            
+            <section><ol class="arabic">
+<li><dl class="first docutils">
+<dt><tt class="docutils literal">distutils</tt></dt>
+<dd><ul class="first last simple">
+<li>part of the std. lib.</li>
+<li>lacks features</li>
+<li>deprecated</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><tt class="docutils literal">setuptools</tt></dt>
+<dd><ul class="first last simple">
+<li>improves on <tt class="docutils literal">distutils</tt></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Components</h1></header>
+            
+            
+            <section><p>(We use <tt class="docutils literal">setuptools</tt>)</p>
+<ul class="simple">
+<li>a top-level package (not always required)</li>
+<li><tt class="docutils literal">setup.py</tt></li>
+</ul>
+<p>Additionally,</p>
+<ul class="simple">
+<li><tt class="docutils literal">README</tt></li>
+<li><tt class="docutils literal">setup.cfg</tt></li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Directory structure</h2></header>
+            
+            
+            <section><pre>sampleproject/
+|-- DESCRIPTION.rst
+|-- README.rst
+|-- setup.py
+|-- setup.cfg
+|-- simple
+|   |-- __init__.py
+|   |-- __main__.py
+|-- tests
+|-- |-- __init__.py
+|-- |-- test_simple.py
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2><tt class="docutils literal">setup.py</tt></h2></header>
+            
+            
+            <section><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+
+<span class="n">here</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">here</span><span class="p">,</span> <span class="s1">&#39;DESCRIPTION.rst&#39;</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">long_description</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><pre><span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s1">&#39;1.2.0&#39;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A sample Python project&#39;</span><span class="p">,</span>
+    <span class="n">long_description</span><span class="o">=</span><span class="n">long_description</span><span class="p">,</span>
+    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://github.com/pypa/sampleproject&#39;</span><span class="p">,</span>
+    <span class="n">author</span><span class="o">=</span><span class="s1">&#39;The Python Packaging Authority&#39;</span><span class="p">,</span>
+    <span class="n">author_email</span><span class="o">=</span><span class="s1">&#39;pypa-dev@googlegroups.com&#39;</span><span class="p">,</span>
+    <span class="n">license</span><span class="o">=</span><span class="s1">&#39;MIT&#39;</span><span class="p">,</span>
+    <span class="n">classifiers</span><span class="o">=</span><span class="p">[</span>
+        <span class="s1">&#39;Development Status :: 3 - Alpha&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Intended Audience :: Developers&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Topic :: Software Development :: Build Tools&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;License :: OSI Approved :: MIT License&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Programming Language :: Python :: 3.4&#39;</span><span class="p">,</span>
+        <span class="p">],</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><pre><span class="n">keywords</span><span class="o">=</span><span class="s1">&#39;sample setuptools development&#39;</span><span class="p">,</span>
+<span class="n">packages</span><span class="o">=</span><span class="n">find_packages</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;contrib&#39;</span><span class="p">,</span> <span class="s1">&#39;docs&#39;</span><span class="p">,</span> <span class="s1">&#39;tests*&#39;</span><span class="p">]),</span>
+<span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;peppercorn&#39;</span><span class="p">],</span>
+<span class="n">package_data</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;package_data.dat&#39;</span><span class="p">],</span>
+<span class="p">},</span>
+<span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;console_scripts&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;myscript=simple:__main__.main&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">},</span>
+<span class="p">)</span>
+</pre>
+<p><a class="reference external" href="https://pythonhosted.org/setuptools/setuptools.html#basic-use">https://pythonhosted.org/setuptools/setuptools.html#basic-use</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p>Some conventions:</p>
+<ul class="simple">
+<li>name: PEP426</li>
+<li>version: PEP440</li>
+</ul>
+<p>An example project: <a class="reference external" href="https://github.com/pypa/sampleproject">https://github.com/pypa/sampleproject</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Building with <tt class="docutils literal">setup.py</tt></h2></header>
+            
+            
+            <section><pre><span class="c1"># installs a locally editable version</span>
+<span class="c1"># (same as ``pip install -e``)</span>
+$ python setup.py develop
+<span class="c1"># creates a source distribution</span>
+$ python setup.py sdist
+<span class="c1"># creates a (platform) wheel distribution</span>
+$ python setup.py bdist_wheel
+<span class="c1"># creates a universal dist. which works with both</span>
+<span class="c1"># Python 2 and 3 and do not have any C extension</span>
+$ python setup.py bdist_wheel --universal
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Upload to PyPI</h2></header>
+            
+            
+            <section><p><a class="reference external" href="https://packaging.python.org/en/latest/distributing.html#uploading-your-project-to-pypi">https://packaging.python.org/en/latest/distributing.html#uploading-your-project-to-pypi</a></p>
+<p><tt class="docutils literal">$ python setup.py upload</tt></p>
+<p><tt class="docutils literal">$ twine upload</tt></p>
+<p><tt class="docutils literal">$ python setup.py sdist bdist_wheel upload</tt></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: packages2.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Future</h1></header>
+            
+            
+            <section><p><a class="reference external" href="https://packaging.python.org/en/latest/future.html">https://packaging.python.org/en/latest/future.html</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="packages2.rst">packages2.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Packaging</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">-</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Goals</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Introduction</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">-</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">-</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">-</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">-</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-9" class="sub">
+          <th><a href="#slide9">Rule of thumb</a></th>
+          <td><a href="#slide9">9</a></td>
+        </tr>
+        
+        <tr id="toc-row-10" class="sub">
+          <th><a href="#slide10">Glossary</a></th>
+          <td><a href="#slide10">10</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">-</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Package formats</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-13" class="sub">
+          <th><a href="#slide13">Eggs</a></th>
+          <td><a href="#slide13">13</a></td>
+        </tr>
+        
+        <tr id="toc-row-14" class="sub">
+          <th><a href="#slide14"><strong>Wheels</strong></a></th>
+          <td><a href="#slide14">14</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">-</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">-</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">-</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">-</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Installation tools</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">-</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-21" class="sub">
+          <th><a href="#slide21">Prefer <tt class="docutils literal">pip</tt></a></th>
+          <td><a href="#slide21">21</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">-</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Creating packages</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Components</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-25" class="sub">
+          <th><a href="#slide25">Directory structure</a></th>
+          <td><a href="#slide25">25</a></td>
+        </tr>
+        
+        <tr id="toc-row-26" class="sub">
+          <th><a href="#slide26"><tt class="docutils literal">setup.py</tt></a></th>
+          <td><a href="#slide26">26</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">-</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">-</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">-</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-30" class="sub">
+          <th><a href="#slide30">Building with <tt class="docutils literal">setup.py</tt></a></th>
+          <td><a href="#slide30">30</a></td>
+        </tr>
+        
+        <tr id="toc-row-31" class="sub">
+          <th><a href="#slide31">Upload to PyPI</a></th>
+          <td><a href="#slide31">31</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Future</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Autoscale</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>f</td>
+      </tr>
+      <tr>
+        <th>Presenter view</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Blank screen</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main();</script>
+</body>
+</html>

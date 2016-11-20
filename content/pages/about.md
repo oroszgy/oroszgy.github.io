@@ -1,7 +1,7 @@
 Title: About
 Date: 2016-01-06 10:20
 Category: Menu
-
+sortorder: -50
 
 ## György Orosz, PhD
 
@@ -9,9 +9,10 @@ Category: Menu
 
 Title: "Hybrid algorithms for preprocessing agglutinative languages and less-resourced domains effectively"
 
-* [Phd Dissertation](pdfs/thesis.pdf)
-* [Summmary of the dissertation](pdfs/summary_en.pdf)
-* [Magyar nyelvű tézisfüzet](pdfs/summary_hu.pdf)
+* [Phd Dissertation]({filename}/pdfs/phd/thesis.pdf)
+* [Summmary of the dissertation]({filename}/pdfs/phd/summary_en.pdf)
+* [Magyar nyelvű tézisfüzet]({filename}/pdfs/phd/summary_hu.pdf)
+* [Nyilvános védés diái](pdfs/defense_hu.pdf)
 
 PurePos, the open-source morphological disambiguator tool can be downloaded from [Github](https://github.com/ppke-nlpg/purepos).
 
@@ -21,8 +22,10 @@ PurePos, the open-source morphological disambiguator tool can be downloaded from
 
 ### Previous positions
 * 2012 - 2014 Research Assistant, [MTA-PPKE Hungarian Language Technology Research Group](http://nlpg.itk.ppke.hu/)
+* 2010 - 2015 PhD Student, [Pázmány Péter Caholic University](http://itk.ppke.hu/en)
+* 2008 - 2010 Software Developer, [University of Kent](https://www.cs.kent.ac.uk/)
 
-[LinkedIn profile](http://hu.linkedin.com/in/oroszgy">) | [Citations  on Google Scholar](http://scholar.google.hu/citations?user=aHDWeEMAAAAJ&hl=en) | [Publications on MTMT](https://vm.mtmt.hu//search/slist.php?lang=0&AuthorID=10029812) | [Mendeley profile](http://www.mendeley.com/profiles/gyorgy-orosz)
+[LinkedIn profile](http://hu.linkedin.com/in/oroszgy) | [Citations  on Google Scholar](http://scholar.google.hu/citations?user=aHDWeEMAAAAJ&hl=en) | [Publications on MTMT](https://vm.mtmt.hu//search/slist.php?lang=0&AuthorID=10029812) | [Mendeley profile](http://www.mendeley.com/profiles/gyorgy-orosz)
 
 ### Research interests in NLP
 
