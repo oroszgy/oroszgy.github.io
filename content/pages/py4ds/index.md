@@ -1,5 +1,6 @@
 Title: Python technológiák
 Category: Menu, Teaching
+status: hidden
 
 A tárgy célja, hogy megismertesse a hallgatókat a Python nyelv azon elemeivel illetve csomagjaival, amik hatékonyan támogatják adatbányászati, adatelemzési és információkinyerési feladatok megoldását.
 

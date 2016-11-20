@@ -1,12 +1,12 @@
 Title: Publications
 Date: 2016-11-20 10:20
 Category: Menu
-sortorder: -50
+sortorder: -40
 
 
-### Phd dissertation
+## Phd dissertation
 
-Title: "Hybrid algorithms for preprocessing agglutinative languages and less-resourced domains effectively"
+*"Hybrid algorithms for preprocessing agglutinative languages and less-resourced domains effectively"*
 
 * [Phd Dissertation]({filename}/pdfs/phd/thesis.pdf)
 * [Summmary of the dissertation (in English)]({filename}/pdfs/phd/summary_en.pdf)
@@ -15,7 +15,7 @@ Title: "Hybrid algorithms for preprocessing agglutinative languages and less-res
 
 As part of the thesis a state-of-the-art the open-source morphological disambiguator has been develeoped which can be downloaded from [Github](https://github.com/ppke-nlpg/purepos).
 
-### Publications
+<hr>
 
 [Citations  on Google Scholar](http://scholar.google.hu/citations?user=aHDWeEMAAAAJ&hl=en) | [Publications on MTMT](https://vm.mtmt.hu//search/slist.php?lang=0&AuthorID=10029812) | [Mendeley profile](http://www.mendeley.com/profiles/gyorgy-orosz)
 

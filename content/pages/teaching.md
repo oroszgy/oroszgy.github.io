@@ -1,17 +1,16 @@
-Title: Oktatás
-Date: 2016-01-06 10:20
+Title: Teaching
+Date: 2016-05-06 10:20
 Category: Menu
 sortorder: 2
 
-## Aktuális
+Recently, I [open-sourced the teaching materials that I created for the Scripting Languages, Advanced Python and Python for Data Science Courses](https://github.com/oroszgy/ScriptingLanguagesCourseMaterials).
 
-[Python technológiák]({filename}/pages/py4ds.md)
+## Previous courser
 
-## Korábban oktatott kurzusok
-
-* Python technológiák ([2014 ősz]())
-* Bevezetés a programozásba (2010 ősz, 2011 ősz)
-* Szkriptnyelvek (2012 tavasz, 2013 tavasz, [2014 tavasz](), [2015 tavasz]())
-* Szkriptnyelvek digitális bölcsészeknek (2012 ősz)
-* Natural Language Processing for Erasmus students (2010 ősz, 2013 ősz)
-* Nyelvtechnológia eszközei (2011 tavasz)
+* Advanced Python (2014 fall)
+* Python for Data Science ([2016 spring](({filename}/pages/py4ds/index.md)))
+* Scripting Languages (2012 spring, 2013 spring, 2014 spring, 2015 spring)
+* Scripting Languages for Digital Humanities (2012 fall)
+* Programming Basics -- Instructor (2010 fall, 2011 fall)
+* Natural Language Processing for Erasmus students -- Instuctor (2010 fall, 2013 fall)
+* Natural Language Provessing -- Instructor (2011 fall)
