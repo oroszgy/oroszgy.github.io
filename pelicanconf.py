@@ -9,7 +9,8 @@ PATH = 'content'
 
 TIMEZONE = 'Europe/Paris'
 
-STATIC_PATHS = ['images', 'pdfs', 'handouts']
+STATIC_PATHS = ['images', 'pdfs', 'handouts', "extra/CNAME"]
+EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 READERS = {'html': None}
 
 DEFAULT_LANG = 'en'
