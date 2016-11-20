@@ -1,0 +1,3 @@
+[submodule "crowsfoot"]
+	path = crowsfoot
+	url = git@github.com:oroszgy/crowsfoot.git

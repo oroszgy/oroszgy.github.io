@@ -15,7 +15,7 @@ READERS = {'html': None}
 
 DEFAULT_LANG = 'en'
 SITE_URL = ""
-THEME = "/Users/gyorgyorosz/Documents/PPKE/homepage/crowsfoot"
+THEME = "./crowsfoot"
 PROFILE_IMAGE_URL = "/images/wordcloud.png"
 SHOW_ARTICLE_AUTHOR = False
 EMAIL_ADDRESS = "gyorgy@orosz.link"
