@@ -11,7 +11,7 @@ sortorder: -40
 * [Phd Dissertation]({filename}/pdfs/phd/thesis.pdf)
 * [Summmary of the dissertation (in English)]({filename}/pdfs/phd/summary_en.pdf)
 * [Summmary of the dissertation (in Hungarian)]({filename}/pdfs/phd/summary_hu.pdf)
-* [Slides (in Hungarian)](pdfs/phd/defense_hu.pdf)
+* [Slides (in Hungarian)]({filename}/pdfs/phd/defense_hu.pdf)
 
 As part of the thesis a state-of-the-art the open-source morphological disambiguator has been develeoped which can be downloaded from [Github](https://github.com/ppke-nlpg/purepos).
 
