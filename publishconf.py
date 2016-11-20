@@ -14,7 +14,8 @@ RELATIVE_URLS = False
 
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
 CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
-SITEURL = 'oroszgy.github.io'
+SITEURL = 'http://oroszgy.github.io'
+GITHUB_ADDRESS = "http://github.com/oroszgy"
 
 DELETE_OUTPUT_DIRECTORY = False
 
@@ -22,4 +23,4 @@ DELETE_OUTPUT_DIRECTORY = False
 
 #DISQUS_SITENAME = ""
 GOOGLE_ANALYTICS = "UA-46832223-1"
-RELATIVE_URLS = False
+RELATIVE_URLS = True
