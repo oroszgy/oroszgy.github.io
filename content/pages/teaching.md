@@ -3,9 +3,9 @@ Date: 2016-11-20 10:20
 Category: Menu
 sortorder: 2
 
-Recently, I [open-sourced the teaching materials that I created for the Scripting Languages, Advanced Python and Python for Data Science Courses](https://github.com/oroszgy/ScriptingLanguagesCourseMaterials).
+Recently, I [open-sourced the teaching materials that I created for the "Scripting Languages", "Advanced Python" and "Python for Data Science" courses](https://github.com/oroszgy/ScriptingLanguagesCourseMaterials).
 
-## Previous courser
+## Previous courses
 
 * Advanced Python (2014 fall)
 * Python for Data Science ([2016 spring](({filename}/pages/py4ds/index.md)))
