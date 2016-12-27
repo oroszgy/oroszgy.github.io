@@ -15,7 +15,7 @@ sortorder: -40
 
 As part of the thesis a state-of-the-art the open-source morphological disambiguator has been develeoped which can be downloaded from [Github](https://github.com/ppke-nlpg/purepos).
 
-<hr>
+## List of publications
 
 [Citations  on Google Scholar](http://scholar.google.hu/citations?user=aHDWeEMAAAAJ&hl=en) | [Publications on MTMT](https://vm.mtmt.hu//search/slist.php?lang=0&AuthorID=10029812) | [Mendeley profile](http://www.mendeley.com/profiles/gyorgy-orosz)
 
