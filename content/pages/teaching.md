@@ -8,7 +8,7 @@ Recently, I [open-sourced the teaching materials that I created for the "Scripti
 ## Previous courses
 
 * Python for Data Science ([2016 spring](({filename}/pages/py4ds/index.md)))
-* * Advanced Python (2014 fall)
+* Advanced Python (2014 fall)
 * Scripting Languages (2012 spring, 2013 spring, 2014 spring, 2015 spring)
 * Scripting Languages for Digital Humanities (2012 fall)
 * Programming Basics -- Instructor (2010 fall, 2011 fall)
