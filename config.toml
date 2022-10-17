@@ -41,8 +41,8 @@ theme = 'loveit'
         Email = "gyorgy@orosz.link"
 
     [params.app]
-        noFavicon = false
-        svgFavicon = "coding.png"
+        # noFavicon = false
+        # svgFavicon = "coding.png"
 
 [menu]
     [[menu.main]]
