@@ -1,0 +1,59 @@
+baseURL = 'https://gyorgy.orosz.link/'
+languageCode = 'en-us'
+title = "György Orosz, PhD"
+enableGitInfo = true
+theme = 'loveit'
+
+
+[author]
+    name = "György Orosz"
+    email = "gyorgy@orosz.link"
+
+
+[params]
+    title = "György Orosz, PhD"
+    description = "Hi, I am Gyuri"
+    dateFormat = "2006-01-02"
+    # googleAnalytics = ""
+
+    [params.header.title]
+        name = "György Orosz, PhD"
+        logo = ""
+        pre = "<i class='fa fa-code fa-fw' aria-hidden='true'></i> "
+        post = ""
+
+    [params.home]
+        [params.home.posts]
+            enable = false
+        [params.home.profile]
+            avatarURL = "/images/profile.png"
+            enable = true
+            social = true
+            # title = "György Orosz, PhD"
+            typeit = false
+            subtitle = "Hi, I am Gyuri.<br/>I am a freelance natural language processing engineer. I build and deploy AI solutions solving real-world language related problems.<br/> I am husband and proud father of three."
+
+    [params.social]
+        Github= "oroszgy"
+        Linkedin = "oroszgy"
+        Skype = "oroszgy"
+        Googlescholar = "aHDWeEMAAAAJ"
+        Email = "gyorgy@orosz.link"
+
+    [params.app]
+        noFavicon = false
+        svgFavicon = "coding.png"
+
+[menu]
+    [[menu.main]]
+        identifier = "about"
+        name = "About Me"
+        url = "/"
+    [[menu.main]]
+        identifier = "portfolio"
+        name = "Portfolio"
+        url = "/portfolio"
+
+[sitemap]
+    changefreq = "weekly"
+    filename = "sitemap.xml"

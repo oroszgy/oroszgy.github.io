@@ -1,5 +1,3 @@
-*.pid
-*.pyc
-*.swp
-output/
-backup/
+.hugo_build.lock
+/public/
+/resources/
