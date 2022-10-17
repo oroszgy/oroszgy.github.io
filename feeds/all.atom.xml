@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>random.sample(Gyuri())</title><link href="oroszgy.github.io/" rel="alternate"></link><link href="oroszgy.github.io/feeds/all.atom.xml" rel="self"></link><id>oroszgy.github.io/</id><updated>2016-01-06T10:20:00+01:00</updated><entry><title>welcome</title><link href="oroszgy.github.io/welcome.html" rel="alternate"></link><published>2016-01-06T10:20:00+01:00</published><author><name>György Orosz</name></author><id>tag:,2016-01-06:oroszgy.github.io/welcome.html</id><summary type="html">&lt;h2&gt;Oktatás&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="oroszgy.github.io/pages/python-technologiak.html"&gt;Python technológiák 2016 tavasz&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</summary></entry></feed>
