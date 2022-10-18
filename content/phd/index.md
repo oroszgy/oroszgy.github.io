@@ -12,4 +12,4 @@ draft: false
 * [Magyar nyelvű tézisfüzet](summary_hu.pdf)
 * [Nyilvános védés diái](defense_hu.pdf)
 
-As part of my research, I've developed a state-of-the-art open-source morphological disambiguator tool named [PurePos](https://github.com/ppke-nlpg/purepos) which is now integral part of commonly used Hungarian NL pipelines such as `magyarlanc` and [`emtsv`](https://github.com/nytud/emtsv).
+As part of my research, I've developed a state-of-the-art open-source morphological disambiguator tool called [PurePos](https://github.com/ppke-nlpg/purepos). This tool is now part of the most commonly used Hungarian natural language pipelines such as *magyarlanc* and [`emtsv`](https://github.com/nytud/emtsv).

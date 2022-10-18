@@ -18,7 +18,8 @@ theme = 'loveit'
 
     [params.header.title]
         name = "György Orosz, PhD"
-        logo = ""
+        # typeit = true
+        # logo = "coding.png"
         pre = "<i class='fa fa-code fa-fw' aria-hidden='true'></i> "
         post = ""
 
@@ -31,7 +32,7 @@ theme = 'loveit'
             social = true
             # title = "György Orosz, PhD"
             typeit = false
-            subtitle = "Hi, I am Gyuri.<br/>I am a freelance natural language processing engineer. I build and deploy AI solutions solving real-world language related problems.<br/> I am husband and proud father of three."
+            subtitle = "Hi, I am Gyuri.<br/>I am a freelance natural language processing engineer.<br/>I build and deploy AI solutions for real-world language related problems.<br/>I am a husband and proud father of three."
 
     [params.social]
         Github= "oroszgy"
