@@ -14,7 +14,7 @@ theme = 'loveit'
     title = "György Orosz, PhD"
     description = "Hi, I am Gyuri"
     dateFormat = "2006-01-02"
-    # googleAnalytics = ""
+    googleAnalytics = "UA-89448696-1"
 
     [params.header.title]
         name = "György Orosz, PhD"
